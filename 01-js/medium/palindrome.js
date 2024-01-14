@@ -4,7 +4,22 @@
 */
 
 function isPalindrome(str) {
+  let punc = " .?!,";
+  let ar = str
+    .toLowerCase()
+    .split("")
+    .filter((chr) => !punc.includes(chr));
+  let len = ar.length;
+  // if (len === 0) {
+  //   return false;
+  // }
+  for (let i = 0; i < len / 2; i++) {
+    if (ar[i] !== ar[len - i - 1]) {
+      return false;
+    }
+  }
   return true;
 }
 
+console.log(isPalindrome("hello"));
 module.exports = isPalindrome;
