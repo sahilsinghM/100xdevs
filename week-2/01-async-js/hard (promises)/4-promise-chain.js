@@ -5,20 +5,18 @@
  * Compare it with the results from 3-promise-all.js
  */
 
-function wait1(t) {
-
-}
-
-function wait2(t) {
-
-}
-
-function wait3(t) {
-
-}
+const sleep = require("./2-sleep-completely");
 
 function calculateTime(t1, t2, t3) {
-
+  const startTime = Date.now();
+  let promise1 = sleep(t1 * 1000);
+  let promise2 = sleep(t2 * 1000);
+  let promise3 = sleep(t3 * 1000);
+  return Promise.all([promise1, promise2, promise3]).then(() => {
+    const endTime = Date.now();
+    const totalTime = endTime - startTime;
+    return totalTime;
+  });
 }
 
 module.exports = calculateTime;

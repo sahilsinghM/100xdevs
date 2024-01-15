@@ -1,0 +1,8 @@
+GET http://localhost:4000/todos
+
+###
+POST http://localhost:4000/todos/ 
+    content-type: application/json
+
+    
+       { "title": "Buy groceries", "completed": false, "description": "I should buy groceries" }
