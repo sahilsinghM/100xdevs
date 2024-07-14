@@ -30,7 +30,7 @@ app.get("/requestCount", function (req, res) {
   res.status(200).json({ requestCount });
 });
 
-app.all("*", counter, () => {
+app.all("*", () => {
   res.status(404);
 });
 
