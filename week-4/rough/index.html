@@ -1,11 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+    <script>
+        function submitForm() {
+            var name = document.getElementById("name").value;
+            var email = document.getElementById("email").value;
+            if (name && email) {
+                alert("Name: " + name + "\nEmail: " + email);
+            } else {
+                alert("Please fill in all fields.");
+            }
+        }
+    </script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
-    
+
+    <input type="text" placeholder="Enter Name"><br/>
+    <input type="text" placeholder="Enter Email"><br/>
+    <button onclick="submitForm()">SUBMIT</button>
 </body>
 </html>
