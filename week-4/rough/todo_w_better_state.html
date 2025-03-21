@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -6,7 +5,9 @@
   <script>
     let globalId = 1;
     let todoState = [];
+    let oldTodoState = [];
 
+    
     function markAsDone(todoId) {
       const parent = document.getElementById(todoId);
       parent.children[2].innerHTML = "Done!"
@@ -28,17 +29,42 @@
       return child;
     }
 
+    function removeTodo(todo) {
+      const element = document.getElementById(todo.id);
+      element.parent.removeChild(element);
+    }
+
+    function updateTodo(oldTodo, newTodo) {
+      const element = document.getElementById(oldTodo.id);
+      element.children[0].innerHTML = newTodo.title;
+      element.children[1].innerHTML = newTodo.description;
+      element.children[0].innerHTML = newTodo.completed ? "Mark as done" : "Done";
+    }
+
     function updateState(newTodos) {
-      const parent = document.getElementById("todos");
-      parent.innerHTML = "";
-      for (let i = 0; i < newTodos.length; i++) {
-        const title = newTodos[i].title;
-        const description = newTodos[i].description;
-        parent.appendChild(createChild(title, description, globalId++));
-      }
+      // calculate the diff b/w newTodos and oldTodos.
+      // More specifically, find out what todos are - 
+      // 1. added
+      // 2. deleted
+      // 3. updated
+      const added = newTodos.filter(todo => !oldTodoState.includes(todo));
+      const deleted = oldTodoState.filter(todo => !newTodos.includes(todo));
+      const updated = newTodos.filter(todo => {
+        oldTodoState.find(oldTodo => {
+          return oldTodo.id === todo.id && (oldTodo.title !== todo.title || oldTodo.description !== todo.description || oldTodo.children[2]!=todo.children[2]);
+        });
+      });
+      // calculate these 3 arrays
+      // call addTodo, removeTodo, updateTodo functions on each of the
+      // elements
+      addTodo(added);
+      removeTodo(deleted);
+      updateTodo(updated);
+      oldTodoState = newTodos;
     }
 
     function addTodo() {
+      
       const title = document.getElementById("title").value;
       const description = document.getElementById("description").value;
       todoState.push({
@@ -63,23 +89,3 @@
 </body>
 
 </html>
-
-<!-- 
-generally apps are fullstack. it will have a backend. client will communicate to and fro. 
-without state client will only have local storage. it will get reset each session. all progress will get lost.
-it won't be a dynamic.
-need to have state to have dynamic website.
-
-
-UGLY:
-whenever state is updated, completely delete the previous ui, and overwrite the ui according to new state
-
-better:
-only update those todos in the ui which were changed in the new state.
-BE will just give the new state. i have to write the logic which are new todos, 
-which are updated todos, which are deleted todos and then update only the changed ui
-
-also in general you dont want to completely delete the previous ui for each small change.
-
-wouldn't it be nice if there were a library to handle all of this efficiently
--->
