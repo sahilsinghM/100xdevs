@@ -1,3 +1,7 @@
+// npm init -y- initialize node project - create package.json file
+// npm install to install all dependencies and makes this project shareable
+//frontend and backend need to be deployed separately. both folders need to have their own package.json
+
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
