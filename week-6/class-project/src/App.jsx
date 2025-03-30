@@ -20,11 +20,12 @@ check the slides
 come back now
 
 wrapper component = a component that takes another component as a prop 
-
+you can just put {children} as a prop and it will work. it will create a wrapper component
 */
 
 import { useState } from "react";
 import Todos from "./components/todos";
+import Wrapper from "./components/wrapper";
 // import reactLogo from "./assets/react.svg";
 // import viteLogo from "/vite.svg";
 import "./App.css";
@@ -46,6 +47,10 @@ function App() {
       <Header title="Hello World3" />
       <br />
       <Todos />
+      <Wrapper>
+        <Todos />
+      </Wrapper>
+      <Wrapper>bi there</Wrapper>
     </>
   );
 }
