@@ -12,7 +12,7 @@ function Todos() {
   const [Todos, SetTodos] = useState([
     { title: "chai", description: "peelo" },
     { title: "biscuit", description: "khaalo" },
-    { title: "exercise", description: "karlo" },
+    // { title: "exercise", description: "karlo" },
   ]);
   const addTodo = (todo) => {
     SetTodos((Todos) => [...Todos, todo]);

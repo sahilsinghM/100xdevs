@@ -26,16 +26,25 @@ you can just put {children} as a prop and it will work. it will create a wrapper
 import { useState } from "react";
 import Todos from "./components/todos";
 import Wrapper from "./components/wrapper";
+import Todo2 from "./components/hooks";
+import Xounter from "./components/useMem";
+import Buttoner from "./components/usecallback";
+import { Assignment1 } from "./components/assignment1";
+import { Assignment2 } from "./components/assignment2";
 // import reactLogo from "./assets/react.svg";
 // import viteLogo from "/vite.svg";
 import "./App.css";
 
 function App() {
   const [num, setNum] = useState("Sahil");
+  // const [buttonClicked, setButtonClicked] = useState(1);
   const ClickHandler = () => {
     setNum(Math.random());
   };
 
+  // const ButtonHandler = (e) => {
+  //   setButtonClicked(e);
+  // };
   return (
     <>
       <button onClick={ClickHandler}>Click Me</button>
@@ -47,10 +56,21 @@ function App() {
       <Header title="Hello World3" />
       <br />
       <Todos />
+      <h1>Wrapper intro</h1>
       <Wrapper>
         <Todos />
       </Wrapper>
       <Wrapper>bi there</Wrapper>
+      <h1>Hooks Intro</h1>
+      <Todo2 />
+      <h1>useMemo</h1>
+      <Xounter />
+      <h1>useCallback</h1>
+      <Buttoner />
+      <h1>Assignment 1</h1>
+      <Assignment1 />
+      <h1>Assignment 2</h1>
+      <Assignment2 />
     </>
   );
 }

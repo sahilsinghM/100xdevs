@@ -1,0 +1,3 @@
+[submodule "week-6/assignments"]
+	path = week-6/assignments
+	url = https://github.com/sahilsinghM/assignments.git
