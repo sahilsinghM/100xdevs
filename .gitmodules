@@ -1,3 +1,6 @@
 [submodule "week-6/assignments"]
 	path = week-6/assignments
 	url = https://github.com/sahilsinghM/assignments.git
+[submodule "week-7/week-7.2"]
+	path = week-7/week-7.2
+	url = https://github.com/100xdevs-cohort-2/week-7.git
