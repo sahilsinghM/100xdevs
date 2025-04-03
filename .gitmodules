@@ -4,3 +4,6 @@
 [submodule "week-7/week-7.2"]
 	path = week-7/week-7.2
 	url = https://github.com/100xdevs-cohort-2/week-7.git
+[submodule "week-8/week-8/paytm"]
+	path = week-8/week-8/paytm
+	url = https://github.com/100xdevs-cohort-2/paytm
