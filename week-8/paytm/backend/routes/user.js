@@ -32,7 +32,7 @@ userRouter.post("/signup", async (req, res) => {
       password,
     });
   } catch (error) {
-    res.status(400).json({ error: error.errors });
+    return res.status(400).json({ error: error.errors });
   }
   // Check if user already exists
 
@@ -48,9 +48,9 @@ userRouter.post("/signup", async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    res.status(201).json({ userId: user._id, token: token });
+    return res.status(201).json({ userId: user._id, token: token });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error  " + error });
+    return res.status(500).json({ error: "Internal server error  " + error });
   }
 });
 
@@ -93,7 +93,8 @@ userRouter.put("/", authMiddleware, async (req, res) => {
 
 userRouter.get("/bulk", authMiddleware, async (req, res) => {
   try {
-    const filter = req.query.filter;
+    const filter = req.query.filter ? req.query.filter : "";
+
     const users = await User.find({
       $or: [
         { firstName: { $regex: filter } },
@@ -102,7 +103,7 @@ userRouter.get("/bulk", authMiddleware, async (req, res) => {
     });
     res.status(200).json({ users });
   } catch (err) {
-    res.status(500).status({ error: "Internal server error" + error });
+    res.status(500).json({ error: "Internal server error " + err });
   }
 });
 

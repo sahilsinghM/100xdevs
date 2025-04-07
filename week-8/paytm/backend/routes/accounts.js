@@ -5,6 +5,7 @@
  * happen together or nothing happens
  * some of total wallet balance on the platform should remain the same
  *
+ * precision errors, never store float in the database. store in
  */
 const express = require("express");
 const mongoose = require("mongoose");
@@ -42,6 +43,7 @@ accountsRouter.post("/addBalance", authMiddleware, async (req, res) => {
   }
 });
 
+// problem happens when you try to get some information from the backend. that information might be overridden by some other transaction.
 accountsRouter.post("/transfer", authMiddleware, async (req, res) => {
   const session = await mongoose.startSession();
   try {

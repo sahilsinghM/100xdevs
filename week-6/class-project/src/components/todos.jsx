@@ -21,7 +21,7 @@ function Todos() {
     <div>
       <CreateTodo onCreate={addTodo} todos={Todos} />
       {Todos.map((todo, index) => (
-        <Todo key={index} title={todo.title} description={todo.description} />
+        <Todo key={index} title={todo.title} description={todo.description} /> //not good. should not use index
       ))}
     </div>
   );
