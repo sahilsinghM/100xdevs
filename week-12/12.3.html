@@ -1,0 +1,63 @@
+<!-- 
+npm packaging and monorepos
+go to any project on github. it will be a giant repo with multiple packages. both frontend and backend.
+this is a monorepo. it has multiple packages in it. example: cal.com
+how can there be both frontend and backend in the same repo?
+monorepo is a single repository that contains multiple packages. it can be a frontend and backend or multiple frontend and backend packages.
+it has folder called as modules. each module is a package. suppose there is some logic required both in frontend and backend.
+then create a npm package. push it to npm. in the other repo, they install the package using npm install <package-name>.
+
+
+
+go to npmjs.com and sign up.  you can check what packages are available by searching for them.
+
+npm init -y - this will create a package.json file.
+npm install -g typescript - this will install typescript globally.
+tsc --init - this will create a tsconfig.json file.
+
+change the root directory to src and outdir to dist.
+create a new file called index.ts in the src directory.
+
+write your logic. export the function.
+
+do tsc -b
+this will build the project and create a dist directory with the compiled js files.
+go to package.json and add a script to run the compiled js file.
+
+change the name of the package to your name. change main to dist/index.js.
+
+then npm publish --access public
+
+
+go to your npm account and check if the package is there. you will see the package name and version.
+
+npm pack 
+this will create a tarball file. this is the file that you will upload to npm.
+
+wait, there is ts file there. you should not have ts file there. you should only have js file there.
+
+add a .npmignore file and add the ts folder to it.
+
+change the version in package.json to 1.0.1 and run npm publish --access public again.
+this will create a new version of the package. this is how you will update the package.
+
+now this is a public package. anyone can use it. you can also make it private by adding --access restricted.
+npm publish --access restricted
+npm unpublish --force 
+this will remove the package from npm. you can also unpublish a specific version by adding the version number.
+npm unpublish --force <package-name>@<version>
+npm deprecate <package-name>@<version> "this version is deprecated"
+
+
+try to install the package using npm install <package-name> in some other project. you will be able to install it.
+now try to import any object from the package. you will see that it is not working.
+this is because you have not added the types to the package. you need to add a types field in package.json and point it to the dist folder.
+this will tell typescript where to find the types.
+
+in the tsconfig.json file, add the following line:
+"declaration": true
+this will create a d.ts file in the dist folder. this is the file that will be used by typescript to find the types.
+now you can import the package in any other project and use it.
+
+
+-->

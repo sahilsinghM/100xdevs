@@ -1,0 +1,180 @@
+<!-- 
+ 12.1
+ vercel gets very expensive at scale. 
+ you should know how to do it on tranditional server
+
+ Distribution and Storage
+ objects should not be stored in a traditional server
+users, likes, etc. should be stored in a database
+objects(images, videos, etc.) should be stored
+ in a object stores
+
+ every cloud provider has their own object store
+    AWS S3, Google Cloud Storage, Azure Blob Storage
+    Digital Ocean Spaces, Backblaze B2
+    Cloudflare R2, Vercel Blob Storage
+    Firebase Storage, Supabase Storage
+    etc.
+    AWS S3 is the most popular
+
+how do I distribute the objects?
+    CDN (Content Delivery Network)
+    Cloudflare, AWS Cloudfront, Fastly, Vercel Edge Network
+    Akamai, Stackpath, etc.
+    AWS S3 has a built in CDN
+    Cloudflare is the most popular CDN
+
+CDN
+    is a network of servers that are distributed around the world
+    when a user requests an object, the CDN will serve it from the closest server
+    this reduces latency and improves performance
+    CDNs also cache the objects, so they are served from the CDN instead of the origin server
+    this reduces the load on the origin server and improves performance
+    CDNs also provide security features, such as DDoS protection and SSL termination
+    CDNs also provide analytics, such as how many requests were made, how much data was transferred, etc.
+    CDNs also provide edge functions, which are serverless functions that run at the edge of the network
+    this allows you to run code closer to the user, reducing latency and improving performance
+    CDNs also provide image optimization, such as resizing, cropping, and compressing images
+    this reduces the size of the images and improves performance
+    CDNs also provide video optimization, such as transcoding and adaptive bitrate streaming    
+    this reduces the size of the videos and improves performance
+
+AWS Cloudfront
+    is a CDN that is built on top of AWS S3
+    it is the most popular CDN
+    it is easy to use and has a lot of features
+    it is also very cheap
+    it is also very fast
+
+POP
+    Point of Presence
+    is a location where a CDN has a server
+    the more POPs a CDN has, the faster it is
+    the more POPs a CDN has, the cheaper it is
+    the more POPs a CDN has, the better it is
+    the more POPs a CDN has, the more reliable it is
+
+ PROJECT ideas:
+ google photos alternative, a better domain marketplace with more 
+ visibility on process, a better registrar,   hosting service,
+ aws agent. manage and debug 
+
+ when you have no users, storage is expensive
+ when you have users, distribution is expensive
+
+ you want discount on cdn than s3.
+
+Edge networks - deploying backend  
+
+create a react app. vite. cd. npm install. npm run build 
+dist folder will get created. copy all the content in that folder.
+
+go to aws console. create a s3 bucket. 
+  name it whatever you want. 
+  make sure to uncheck the block all public access checkbox.
+  this will allow you to upload files to the bucket.
+  click on create bucket. 
+  go to the bucket. 
+  click on upload. 
+  select all the files in the dist folder and upload them.
+
+currently no one has access to this s3 bucket.
+
+Now go to cloudfront. create a new distribution. select origin domain name as your s3 bucket.
+in the origin acess settings, create a new OAC.
+
+this will create a new origin access control and allow cloudfront to access your s3 bucket.
+this will also create a new IAM role and policy that allows cloudfront to access your s3 bucket.
+HOLD On for now. continue creeating the distribution.
+tick enable security protections in WAF.
+
+If you want to have a domain of your own. add cname record in your domain provider.
+
+in the settings tab, select the default root object as index.html.
+this will allow cloudfront to serve the index.html file when the user accesses the root of the domain.("/")
+
+click create. it will take a few minutes to create the distribution. and will give you an option to copy OAC file
+
+
+go back to S3
+  go to the permissions tab. 
+  click on bucket policy. 
+  copy and paste the copied policy. it will look something like this:
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "PublicReadGetObject",
+          "Effect": "Allow",
+          "Principal": "*",
+          "Action": "s3:GetObject",
+          "Resource": "arn:aws:s3:::your-bucket-name/*"
+        }
+      ]
+    }
+
+in the cloudfront dist, you will get a url that you can use to access your app. it will look something like this:
+    https://d1x2y3z4.cloudfront.net
+
+but the task is still not done.
+next step is to add a custom domain.
+
+go to cloudfront. go to settings tab.
+  click on edit.
+  add your custom domain name. ex: app.myapp.com
+  add a certificate.
+  click on create certificate. this will open amazon certificate manager.
+  select the region. select the domain/subdomain name. app.myapp.com
+  selct DNS validation.
+  click on create. this will create a new certificate.
+  NOW YOU need to verify that you own the domain/subdomain.
+  copy the name, value of the certificate.
+
+  go to godaddy. create a new record.
+  select CNAME. paste name, value.
+  click on save.
+  go back to amazon certificate manager. wait for few minutes. it will show you the status as issued.
+
+  go back to cloudfront. in the certifcates, select the newly created certificate.
+  click on save changes.
+  this will take a few minutes to update the distribution.
+    copy the cloudfront url.
+
+  go to your domain provider. create a new record.
+  select A record. select app in name and paste the cloudfront url in value. remove https and www.    
+    save.
+    this will take a few minutes to update the DNS.
+
+    after 3 days, it will charge you for the storage and distribution. so stop these instances afte you complete the project.
+
+   task is still not done.
+   
+   react is a single page app. if button is clicked, it will go to some other route like /about.
+   clodfront doesn't know about this route.
+   so if you go to app.myapp.com/about, it will give you a 404 error since it will not find any about.html page in the s3 bucket.
+    so you need to create a custom error page.
+    go to cloudfront.
+    go to error pages.
+    click on create custom error response.
+    select 403 error. select custom response.
+    select 200 response code.
+    select /index.html as the response page.
+    click on create.
+    this will allow cloudfront to serve the index.html file when the user accesses the /about route or any other route. 
+    If your routes are handled correctly in your react app, it will work fine.
+    if not, you will get a blank page.
+
+    but it has a problem.
+    the response is cached in the cloudfront.
+    so if you go to app.myapp.com/about, it will give you a 404 error since it will not find any about.html page in the s3 bucket.
+    so you need to complete the invalidation process.
+    also complete the invalidation process for the certificate.
+    go to cloudfront.
+    go to distribution.
+    go to invalidations.
+    click on create invalidation. 
+
+    next is to connect your s3 bucket to github. which means that when you push to github, it will automatically deploy to s3 bucket.
+    ci/cd
+  
+  -->

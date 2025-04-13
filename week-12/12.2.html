@@ -1,0 +1,104 @@
+<!-- 
+
+typescript types
+interfaces
+difference between type and interface
+interface is a way to define a contract in your code. it is a way to define the shape of an object. it is a way to define the types of the properties of an object. it is a way to define the types of the methods of an object. it is a way to define the types of the parameters of a method. it is a way to define the types of the return value of a method.
+type is a way to define a type. it is a way to define the types of the properties of an object. it is a way to define the types of the methods of an object. it is a way to define the types of the parameters of a method. it is a way to define the types of the return value of a method.
+
+example: 
+export interface User {
+    name: string;
+    age: number;
+}
+Pick. exaple:
+export interface User {
+    name: string;
+    age: number;
+    email: string;
+}
+export type UserWithoutEmail = Pick<User, 'name' | 'age'>;
+
+Exclude. example:
+export interface User {
+    name: string;
+    age: number;
+    email: string;
+}
+export type UserWithoutEmail = Exclude<User, 'email'>;
+
+difference between Exclude and Pick
+Pick is used to create a new type by selecting a subset of properties from an existing type. 
+Exclude is used to create a new type by excluding a subset of properties from an existing type.
+
+zod inference 
+let's say you have a backend code. you are trying to do input validation.
+you will use zod. zod will create a schema.
+export const UserSchema = z.object({
+    name: z.string(),
+    age: z.number(),
+    email: z.string().email(),
+});
+
+z.infer<typeof UserSchema> will give you the type of the schema.
+you can use this type in your middleware code
+
+in your middleware, you will use the schema to validate the input.
+export const validateUser = (req, res, next) => {
+    const result = UserSchema.safeParse(req.body);
+    if (!result.success) {
+        return res.status(400).json(result.error);
+    }
+    req.body = result.data;
+    next();
+};
+
+
+
+Readonly
+example:
+export interface User {
+    readonly name: string;
+    age: number;
+}
+export type ReadonlyUser = Readonly<User>;
+export type ReadonlyUser = {
+    readonly [K in keyof User]: User[K];
+};
+
+Partial
+example:
+export interface User {
+    name: string;
+    age: number;
+}
+export type PartialUser = Partial<User>;
+export type PartialUser = {
+    [K in keyof User]?: User[K];
+};
+
+maps .set .get
+example:
+const map = new Map();
+map.set('name', 'John');
+map.set('age', 30);
+map.get('name'); // John
+map.get('age'); // 30
+map.get('email'); // undefined
+
+record
+example:
+export type User = {
+    name: string;
+    age: number;
+};
+
+export type UserRecord = Record<string, User>;
+export type UserRecord = {
+    [key: string]: User;
+};
+
+
+
+
+-->
