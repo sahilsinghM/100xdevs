@@ -1,0 +1,158 @@
+<!-- 
+Docker. 
+Your project runs depend on your OS.
+Containerize. let's ship your machine.
+
+CLI
+Engine
+Registry - Docker Hub
+
+Images vs containers
+
+Image has all the filesystem, code base, network configs. This bundle 
+is self-sufficinet. and once deployed, it can run on any machine.
+you push it to a registry, and then pull it from any machine.
+
+
+Container is a running instance of an image.
+
+let's say you have a web app. You can create an image of your web app,
+and then run it on any machine that has Docker installed.
+
+"docker build ."
+"docker run -p 80:80 my-web-app"
+if you run docker run twice, you will get two containers running.
+
+once pushed to docker hub, you can pull it from any machine.
+
+in your  aws instance do
+docker pull my-web-app
+
+https://github.com/hkirat/docker-roadmap
+
+download zip
+
+How to containerize?
+Create a Dockerfile
+
+FROM node:20
+WORKDIR /use/src/app
+COPY . .
+RUN npm install
+CMD ["npm", "start"] 
+
+should you copy the node_modules folder?
+no, because it is not needed. you can run npm install
+and it will install the dependencies again.
+
+create a .dockerignore file
+node_modules 
+
+how to create a docker image?
+docker build . -t my-web-app .
+
+run this command to see all the images in your machine
+docker images 
+
+run this command to run the image
+docker run my-web-app
+
+this will not work. you need to route the port.
+any request coming to port 80 on your machine should be routed
+to port 80 on the container.
+docker run -p 3000:3000 my-web-app
+
+docker run -p machine-port:container-port <image-name>
+
+docker ps 
+this will show you all the running containers.
+
+how to push the image to docker hub?
+
+docker login
+
+installing docker desktop. the process is so tedious.
+download the .deb file from the docker website.
+
+then follow instructions in the below page.
+https://docs.docker.com/desktop/setup/install/linux/ubuntu/
+
+it will open the docker desktop app. but you wont be able to sign in.
+it will not even tell you the error why you are not able to sign in.
+
+you will have to close the app and reopen the app. you wont be able to
+do it from the UI. Docker desktop will not respond to UI icon.
+
+you will have to run the following command in the terminal.
+sahil@sahil-IdeaPad-Gaming-3-15IHU6:~/Downloads$ systemctl --user restart docker-desktop
+
+this will restart the docker desktop app.
+now it will show you the error message. why you are not able to sign in.
+
+then you have to follow the instructions in the below page.
+https://docs.docker.com/desktop/setup/sign-in/#credentials-management-for-linux-users
+
+it uses pass
+https://www.passwordstore.org/
+
+
+now back to pushing the image to docker hub.
+go to docker hub on your browser.
+create an empty repo on docker hub.
+
+then go back to your terminal.
+docker build . -t <docker-hub-username>/<repo-name> .
+
+this will create an image with the name <docker-hub-username>/<repo-name>
+size is huge. 1.1 gb.
+this is because it has all the dependencies.
+
+
+then run this command to push the image to docker hub.
+docker push <docker-hub-username>/<repo-name>
+this will push the image to docker hub.
+
+you can verify it by going to your docker hub repo on your browser.
+
+if anyone wants to use your image, they can run the following command.
+docker pull <docker-hub-username>/<repo-name>
+this will pull the image from docker hub.
+
+
+How to make docker build faster?
+
+go to dockerfile.
+it looks like this.
+
+Layer 1: FROM node:20
+Layer 2: WORKDIR /use/src/app
+Layer 3: COPY . .
+Layer 4: RUN npm install
+Layer 5: CMD ["npm", "start"]
+
+build time will decrease in future builds because it will use the cache.
+it uses layers to cache the image.
+
+if layer 1 changes, whole image will be rebuilt.
+if layer 2 changes, layer 3 and 4 will be rebuilt.
+if layer 3 changes, layer 4 will be rebuilt.
+if layer 4 changes, layer 5 will be rebuilt.
+
+npm install can be cached. it should run only when package.json changes.
+so we should move it above the COPY command.
+
+need to add logic that will check if package.json has changed.
+then only run npm install.
+if it has not changed, then use the cached layer.
+this will make the build time faster.
+
+
+
+summary:
+docker build . -t <docker-hub-username>/<repo-name> .
+docker run -p 3000:3000 <docker-hub-username>/<repo-name>
+docker login
+docker push <docker-hub-username>/<repo-name>
+docker pull <docker-hub-username>/<repo-name>
+
+-->
