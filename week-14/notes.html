@@ -1,0 +1,36 @@
+<!-- 
+ problems with react - not seo optimized. waterfalling = sequential fetching js files.
+google crawlers do not execute js. so they do not see the content of the page.
+solution: server pe hi page bana ke de do.
+
+ solution: prerendering
+ 1. prerendering - pre-render the page at build time.
+ 2. server-side rendering - pre-render the page at request time.
+ 3. static site generation - pre-render the page at build time and serve it as a static file.
+
+ downside:
+ expensive at scale, very opinionated, no CDN, no caching, slow
+
+npx create-next-app@latest 
+it bootstraps your apps with all the dependencies you need. and configures everything for you.
+it is a react framework. it is a meta framework. it is built on top of react. it is a framework for building server-rendered react apps.
+
+clear page.tsx and globals.css
+
+previously we used to do BrowserRouter, now we do app router.
+but in nextjs, we do not need to do that. we do page routing.
+
+This is also SPA.
+
+Layout - root, for each page folder, you can also nest it, you can also put it under a () and
+next will ignore the route nesting
+
+you should have your ui components in a separate folder called components.
+or you can change the name of the folder. but also change the tailwind config file.
+
+client side rendering vs server side rendering
+anything to do with state will have client side rendering. how? add "use client" at the top
+
+csr + meta tags = SEO, then why ssr?
+
+-->
