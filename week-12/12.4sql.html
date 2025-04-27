@@ -1,0 +1,40 @@
+<!-- 
+vector graph embedding models relational sql nosql
+mongodb is good to start with. you can move very fast. 
+but it is too schemaless. there are no checks. bad code can break it. it is unsafe. runtime errors.
+
+sql has strict schema. you have to put effort to define all the schema. 
+you have to do migrations. 
+sql is good for data integrity. but it is too rigid. it is hard to change the schema. it is slow to query. it is not good for large data. 
+
+run postgres by docker.
+ususal docker bullshit. not able to sign in. forgot gpg key. created new key.
+tried signing in. app stops responding. try to restart from ui.
+doesn't work. restart from terminal. worls. add new key. works.
+docker desktop working now. run docker run hello-world and verified.
+
+now run 
+docker run -d -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres postgres
+it will install postgres and run it in the background.
+
+How to coonect your backend code with ps. 
+ connection string:
+postgresql://postgres:postgres@localhost:5432/postgres
+
+how to connect with your ps container by ssh? 
+docker exec -it <process-id> /bin/bash
+run docker ps to get your process id.
+
+you will be in the container shell. run ls to verify.
+its a linux root.
+
+psql: a terminal based sql frontend.
+this container has psql. you can use psql to connect to the database.
+psql -h localhost -U postgres -d postgres
+
+now you can run sql commands.
+
+other than psql, if you want to run sql commands from your code
+, you can use pg.
+
+-->
