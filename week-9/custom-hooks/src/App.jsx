@@ -1,6 +1,9 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+// import DataApp from "./Data";
+import OnlineApp from "./Online";
+import MouseApp from "./Mouse";
 
 function App() {
   const [render, setRender] = useState(true);
@@ -9,7 +12,15 @@ function App() {
       setRender((prev) => !prev);
     }, 5000);
   }, []);
-  return <>{render ? <MyComponent /> : null}</>;
+  return (
+    <>
+      {render ? <MyComponent /> : null}
+      {render ? <MyComponent2 /> : null}
+      <OnlineApp />
+      <MouseApp />
+      {/* <DataApp /> */}
+    </>
+  );
 }
 
 //useEffect, dependency array is empty, it will
