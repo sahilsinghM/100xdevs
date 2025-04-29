@@ -4,6 +4,8 @@ import { useState } from "react";
 // import DataApp from "./Data";
 import OnlineApp from "./Online";
 import MouseApp from "./Mouse";
+import IntervalApp from "./Interval";
+import SearchBar from "./debounce";
 
 function App() {
   const [render, setRender] = useState(true);
@@ -18,6 +20,8 @@ function App() {
       {render ? <MyComponent2 /> : null}
       <OnlineApp />
       <MouseApp />
+      <IntervalApp />
+      <DebounceApp />
       {/* <DataApp /> */}
     </>
   );
