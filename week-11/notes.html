@@ -1,7 +1,8 @@
 <!-- serverless backends
 
-Drawback of bre metal:
-cold start problems
+Drawback of serverless:
+cold start problems - initially, no servers, because they are not charging us anything but if suddenly someone comes, server wont start fast. its called cold start problem.
+How to solve this? warm pool.
 cost
 speed
 have to maintain all the time and not able to focus on code 
@@ -10,12 +11,88 @@ cloudflare doesn't use nodejs
 cloudflare took v8 and made their own runtime
 
 you cant do get, fetch like express
+pages for frontend. wor kers for backend.
+How does cloudflare workers work?
+isloates. one service running multiple users code simultaneously.
+
+npm create cloudflare@latest -- my-app
+npm run dev
+
+in the src/index.ts file, you can write your code
+
+
+npx wrangler login - go to browser, login, allow access
+npx wrangler whoami
+npm run deploy
+
+chnage the wrangler.toml file
+you now have a backend app running on cloud for free.
+
+but you can't use any npm packages. you have to use cloudflare's own packages.
+you cant use express.
+
+what's the solution?
+use hono
+
+npm create hono@latest -- my-app
+cd my-app
+npm i
+it will give you basic boilerplate code that you can use to start your backend app.
 
 you will be working a lot on shell scripts. revise the same.
 
 AWS Deployment
 reverse proxy
 nginx
+
+create an ec2 instance
+create a security group
+    inbound rules
+        http 80
+        https 443
+        ssh 22
+    outbound rules
+        all traffic
+    create a key pair
+    download the key pair
+    open the key pair in terminal
+    chmod 400 keypair.pem
+    ssh -i keypair.pem  
+
+git clone the repo
+cd into the repo
+npm i
+node index.js
+    it will start the server on port 8080
+    go to your browser and type in the public ip of your ec2 instance
+    you will see the server running.
+
+
+go to security group and add inbound rule for port 8080. both ipv4 and ipv6. http uses tcp in the background.
+    now go to your browser and type in the public ip of your ec2 instance:8080
+    you will see the server running.
+
+
+but you need to connect your domain name to the ec2 instance.
+    go to godaddy and create an A record
+    point it to the public ip of your ec2 instance.
+
+can you instead make the server run on port 80?
+    yes, but you need to run the server as root user.
+    but you should not run the server as root user. it is not a good practice.
+
+
+Into to nginx
+    nginx is a web server that can be used as a reverse proxy, load balancer, and HTTP cache.
+
+reverse proxy. you want to have a single compute machine but you want to run multiple servers on it.
+go to your domain and create A record. point to the public ip of your ec2 instance. 
+
+    but you need to change the nginx config file
+    sudo vi /etc/nginx/nginx.conf
+    it will open the nginx config file in vi editor.
+    press i to enter insert mode.
+    add the following code in the http block
 
 need to change the nginx config file
 # nginx config file
@@ -42,10 +119,10 @@ http {
 
 	server {
     listen 80;
-    server_name be1.100xdevs.com;
+    server_name be2.100xdevs.com;
 
     location / {
-        proxy_pass http://localhost:8080;
+        proxy_pass http://localhost:8081;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -67,7 +144,7 @@ http {
     the new ip. contacted godaddy support. they say wait for 48 hours.
 
     it is pointing to the correct ip, checked from ping command and dnschecker.org
-    , but the server is not running.
+    , but the server is not running. start the server. node index.js. now it should work.
 
 how to add multiple server names in nginx config file?
 
@@ -103,6 +180,22 @@ user -> Server -> Proxy (Reverse proxy)
     need to read postgres and prisma again
 
 
-    certificate management in aws
+certificate management in aws
+
+port 443 is https
+You cant just point to that port. You need ssl certificate. how to get ssl certificate for free?
+
+https://certbot.eff.org/instructions?ws=nginx&os=snap
+
+sudo certbot --nginx
+
+you might need certificate from a more reputated org than letsencrypt. it might cost you. aws certificate manager.
+    but letsencrypt is free and it is good enough for most of the cases.
+
+
+it updates the nginx config file. now it is listening on port 443
+    and it is using the ssl certificate.
+    now you can go to your browser and type in https://be1.100xdevs.com
+    it will show the server running.
     
 -->
