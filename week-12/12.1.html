@@ -86,14 +86,24 @@ in the origin acess settings, create a new OAC.
 this will create a new origin access control and allow cloudfront to access your s3 bucket.
 this will also create a new IAM role and policy that allows cloudfront to access your s3 bucket.
 HOLD On for now. continue creeating the distribution.
-tick enable security protections in WAF.
+tick enable security protections in WAF. 
 
-If you want to have a domain of your own. add cname record in your domain provider.
+WAF is a web application firewall that protects your application from common web exploits. but it is paid. it is not included in the free tier.
+you can uncheck it for now.
+you can enable it later if you want to.
+
+If you want to have a domain of your own. add cname record in your domain provider. 
+go to godaddy
+  create a new record. 
+  Name: app Type:CNAME 
+  paste the cloudfront url in value. 
+  remove https and www. 
+  save.
 
 in the settings tab, select the default root object as index.html.
 this will allow cloudfront to serve the index.html file when the user accesses the root of the domain.("/")
 
-click create. it will take a few minutes to create the distribution. and will give you an option to copy OAC file
+click create. it will take a few minutes to create the distribution. and will give you an option to copy OAC file. copy it.
 
 
 go back to S3
